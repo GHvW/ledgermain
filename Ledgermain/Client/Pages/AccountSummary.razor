@@ -7,23 +7,27 @@
 
 <h3>Account Summary</h3>
 
-<p>Current Balance: @balance.Balance</p>
+<p>Current Balance: @balance</p>
 
 <TransactionInput dispatch=@transactionDispatcher></TransactionInput>
 
 
 @code {
-    private AccountBalance balance = new AccountBalance(100);
-    private TransactionType transactionType = TransactionType.Purchase;
-    private double transactionAmount = 0;
+    public double balance { get; set; } = 100;
 
-    private Action<Transaction> transactionDispatcher = sender.OnNext;
+    private Action<Transaction> transactionDispatcher = (_) => Console.WriteLine("dispatcher not ready");
 
     protected override void OnInitialized()
     {
+        transactionDispatcher = sender.OnNext;
+
         sender
-            .Create(balance)
+            .CreateAccountStore(new AccountBalance(balance))
             .Subscribe(
-                onNext: (_balance) => balance = _balance);
+                onNext: (_balance) => {
+                    Console.WriteLine("goth here");
+                    balance = _balance.Balance;
+                    StateHasChanged();
+                });
     }
 }

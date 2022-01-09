@@ -7,7 +7,7 @@ namespace Ledgermain.Client.Store;
 
 public static class AccountStore {
 
-    public static IObservable<AccountBalance> Create(
+    public static IObservable<AccountBalance> CreateAccountStore(
         this IObservable<Transaction> transactions, 
         AccountBalance initialBalance) =>
             transactions.Scan(initialBalance, AccountBalanceOps.Apply);

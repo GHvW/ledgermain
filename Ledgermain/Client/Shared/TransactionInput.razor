@@ -1,11 +1,26 @@
-﻿<div>
-    <InputSelect @bind-Value=transactionType>
+﻿@using Ledgermain.Shared
+@using Ledgermain.Client.Lib
+
+<EditForm Model="@model">
+    <InputSelect @bind-Value="model.Type">
         <option value="Purchase">Purchase</option>
         <option value="Deposit">Deposit</option>
     </InputSelect>
-    <InputNumber @bind-Value=transactionAmount></InputNumber>
-</div>
+    <InputNumber @bind-Value="model.Amount"></InputNumber>
+    <button @onclick="Dispatch">Submit</button>
+</EditForm>
 
 @code {
+    [Parameter]
+    public Action<Transaction> dispatch { get; set; } = (_) => Console.WriteLine("Uninitialized");
 
+    public BalanceAddition model { get; set; } = new() { Type = TransactionType.Deposit, Amount = 0 };
+
+    private void Dispatch() {
+        Console.WriteLine("here");
+        Console.WriteLine($"Type: {model.Type.ToString()}");
+        Console.WriteLine($"Amount: {model.Amount}");
+
+        dispatch(new Transaction(model.Type == TransactionType.Deposit ? "CREDIT" : "DEBIT", model.Amount));
+    }
 }
