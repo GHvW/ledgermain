@@ -1,0 +1,29 @@
+﻿@page "/accountsummary"
+@using System.Reactive.Subjects;
+@using Ledgermain.Shared
+@using Ledgermain.Client.Store;
+@using Ledgermain.Client.Lib;
+@inject Subject<Transaction> sender
+
+<h3>Account Summary</h3>
+
+<p>Current Balance: @balance.Balance</p>
+
+<TransactionInput dispatch=@transactionDispatcher></TransactionInput>
+
+
+@code {
+    private AccountBalance balance = new AccountBalance(100);
+    private TransactionType transactionType = TransactionType.Purchase;
+    private double transactionAmount = 0;
+
+    private Action<Transaction> transactionDispatcher = sender.OnNext;
+
+    protected override void OnInitialized()
+    {
+        sender
+            .Create(balance)
+            .Subscribe(
+                onNext: (_balance) => balance = _balance);
+    }
+}
