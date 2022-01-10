@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿
+using FluentAssertions;
 
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ public class GivenAnAccountBalance {
     private readonly AccountBalance accountBalance;
 
     public GivenAnAccountBalance() {
-        this.accountBalance = new AccountBalance(100); 
+        this.accountBalance = new AccountBalance(100);
     }
 
     [Fact]
