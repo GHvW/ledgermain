@@ -37,4 +37,24 @@ public class GivenAnAccountBalance {
 
         result.Balance.Should().Be(90);
     }
+
+    // completely unnecessary! This is testing library code
+    [Fact]
+    public void WhenApplyingASeriesOfTransactions() {
+        var transactions =
+            new List<Transaction>() {
+                new Transaction("DEBIT", 10),
+                new Transaction("DEBIT", 20),
+                new Transaction("DEBIT", 30),
+                new Transaction("CREDIT", 100),
+                new Transaction("DEBIT", 50),
+                new Transaction("DEBIT", 5),
+                new Transaction("CREDIT", 200),
+                new Transaction("DEBIT", 40),
+            };
+
+        var result = transactions.Aggregate(this.accountBalance, AccountBalanceOps.Apply);
+
+        result.Balance.Should().Be(245);
+    }
 }

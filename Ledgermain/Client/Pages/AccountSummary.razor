@@ -25,7 +25,6 @@
             .CreateAccountStore(new AccountBalance(balance))
             .Subscribe(
                 onNext: (_balance) => {
-                    Console.WriteLine("goth here");
                     balance = _balance.Balance;
                     StateHasChanged();
                 });
